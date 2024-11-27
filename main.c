@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include "radix-tree.h"
 
-typedef struct nvmed_cache {
+typedef struct test_item {
 	unsigned int lpaddr;
-} NVMED_CACHE;
+} TEST_ITEM;
 
 
 struct radix_tree_root cache_root;
@@ -14,13 +14,13 @@ static void pre_data_init()
 {
     printf("pre_data_init \r\n");
     for(int i = 5; i < 10; i++) {
-        NVMED_CACHE* cache = (NVMED_CACHE*)malloc(sizeof(NVMED_CACHE));
+        TEST_ITEM* cache = (TEST_ITEM*)malloc(sizeof(TEST_ITEM));
         cache->lpaddr = i;
         radix_tree_insert(&cache_root, cache->lpaddr, cache);
     }
 
     for(int i = 14; i < 18; i++) {
-        NVMED_CACHE* cache = (NVMED_CACHE*)malloc(sizeof(NVMED_CACHE));
+        TEST_ITEM* cache = (TEST_ITEM*)malloc(sizeof(TEST_ITEM));
         cache->lpaddr = i;
         radix_tree_insert(&cache_root, cache->lpaddr, cache);
     }
@@ -33,8 +33,8 @@ void main()
     INIT_RADIX_TREE(&cache_root);
 	radix_tree_init();
     pre_data_init();
-    NVMED_CACHE **cacheP, *cache;
-    cacheP = calloc(io_blocks, sizeof(NVMED_CACHE*));
+    TEST_ITEM **cacheP, *cache;
+    cacheP = calloc(io_blocks, sizeof(TEST_ITEM*));
     find_blocks = radix_tree_gang_lookup(&cache_root, (void **)cacheP, start_block, io_blocks);
     printf("find_blocks = %d \r\n", find_blocks);
     if(find_blocks) {
